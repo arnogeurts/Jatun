@@ -29,6 +29,23 @@ $(document).ready(function()
 });
 
 /**
+ * Convert all jatun links into ajax calls
+ */
+$(document).bind('jatun.parse', function(e, element) 
+{
+    $(element).find('.jatun-link').bind('click', function(e) {
+        e.preventDefault();
+        
+        if ($(this).attr('href') != undefined) {
+            var path = $(this).attr('href');
+        } else {
+            var path = $(this).data('path');
+        }
+        $.request({ url: path });
+    })
+});
+
+/**
  * set html of given object
  */
 $(document).bind('jatun.html', function(event, arguments) 
