@@ -5,7 +5,7 @@ namespace Jatun\Event;
 /**
  * @author Arno Geurts 
  */
-class JatonEvent
+class JatunEvent
 {
     private $event;
     
