@@ -1,0 +1,8 @@
+parameters:
+    jatun.event_listener.template_listener.class: Jatun\SymfonyBundle\EventListener\TemplateListener
+
+services:
+    jatun.event_listener.template_listener:
+        class: %jatun.event_listener.template_listener.class%
+        tags:
+            - { name: kernel.event_listener, event: kernel.view, method: onKernelView }
