@@ -3,13 +3,11 @@
  * 
  * @param data      Data about url and stuff, like in jQuery.ajax(...)
  */
-$.request = function(data) 
-{
+$.jatunRequest = function(data) {
     $('body').addClass('wait');
     
     data.dataType = 'json';
-    data.success = function(response) 
-    {
+    data.success = function(response) {
         $.each(response, function(index, event) {
             $(document).triggerHandler(event.event, event.arguments);
         });
@@ -20,20 +18,8 @@ $.request = function(data)
     });
 }
 
-/**
- * trigger parse handler on load
- */
-$(document).ready(function() 
-{
-    $(document).triggerHandler('jatun.parse', ['body']);
-});
-
-/**
- * Convert all jatun links into ajax calls
- */
-$(document).bind('jatun.parse', function(e, element) 
-{
-    $(element).find('.jatun-link').bind('click', function(e) {
+$.fn.jatun = function() {
+    $(this).bind('click', function() {
         e.preventDefault();
         
         if ($(this).attr('href') != undefined) {
@@ -41,24 +27,36 @@ $(document).bind('jatun.parse', function(e, element)
         } else {
             var path = $(this).data('path');
         }
-        $.request({ url: path });
-    })
+        $.jatunRequest({ url: path });
+    });
+}
+
+/**
+ * trigger parse handler on load
+ */
+$(document).ready(function() {
+    $(document).triggerHandler('jatun.parse', ['body']);
+});
+
+/**
+ * Convert all jatun links into ajax calls
+ */
+$(document).bind('jatun.parse', function(e, element) {
+    $(element).find('.jatun-link').jatun();
 });
 
 /**
  * set html of given object
  */
-$(document).bind('jatun.html', function(event, arguments) 
-{
+$(document).bind('jatun.html', function(event, arguments) {
     $(arguments.id).html(arguments.content);
-    $(document).triggerHandler('parse', [arguments.id]);
+    $(document).triggerHandler('jatun.parse', [arguments.id]);
 });
 
 /**
  * open dialog
  */
-$(document).bind('jatun.dialog.open', function(event, arguments)
-{
+$(document).bind('jatun.dialog.open', function(event, arguments) {
     // remove all elements with given id
     $(document).triggerHandler('close_dialog', [arguments]);
     
@@ -76,14 +74,13 @@ $(document).bind('jatun.dialog.open', function(event, arguments)
         }
     });
     
-    $(document).triggerHandler('parse', [ '#'+arguments.id ]);
+    $(document).triggerHandler('jatun.parse', [ '#'+arguments.id ]);
 });
 
 /**
  * close dialog
  */
-$(document).bind('jatun.dialog.close', function(event, arguments)
-{
+$(document).bind('jatun.dialog.close', function(event, arguments) {
     if ($('#' + arguments.id).dialog('isOpen') == true) {
         $('#' + arguments.id).dialog('close');
     }
@@ -96,8 +93,7 @@ $(document).bind('jatun.dialog.close', function(event, arguments)
 /**
  * set dialog title
  */
-$(document).bind('jatun.dialog.title', function(event, arguments) 
-{
+$(document).bind('jatun.dialog.title', function(event, arguments) {
     if ($('#' + arguments.id).dialog('isOpen') == true) {
         $('#' + arguments.id).dialog('option', 'title', arguments.title);
     }
