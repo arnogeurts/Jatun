@@ -9,7 +9,7 @@ use Jatun\Codec\JsonCodec;
 /**
  * @author Arno Geurts 
  */
-class EventList implements \IteratorAggregate, \Traversable
+class EventList implements \IteratorAggregate
 {
     /**
      * Events in the event list

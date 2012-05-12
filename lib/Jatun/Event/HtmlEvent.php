@@ -16,7 +16,7 @@ class HtmlEvent extends JatunEvent
     public function __construct($id, $content)
     {
         parent::__construct('jatun.html', array(
-            'id'        => $id,
+            'id'        => '#' . $id,
             'content'   => $content
         ));
     }
