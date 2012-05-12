@@ -19,7 +19,7 @@ $.jatunRequest = function(data) {
 }
 
 $.fn.jatun = function() {
-    $(this).bind('click', function() {
+    $(this).bind('click', function(e) {
         e.preventDefault();
         
         if ($(this).attr('href') != undefined) {
