@@ -5,7 +5,7 @@ namespace Jatun\Event;
 /**
  * @author Arno Geurts 
  */
-class CloseDialogEvent extends JatunEvent
+class DialogCloseEvent extends JatunEvent
 {
     /**
      * Set event and arguments

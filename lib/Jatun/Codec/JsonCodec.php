@@ -24,7 +24,7 @@ class JsonCodec implements Codec
     public function decode($encoded)
     {
         $eventList = new EventList();
-        foreach (json_decode($encoded) as $eventArray) {
+        foreach (json_decode($encoded, true) as $eventArray) {
             $event = new JatunEvent($eventArray['event'], $eventArray['arguments']);
             $eventList->addEvent($event);
         }
