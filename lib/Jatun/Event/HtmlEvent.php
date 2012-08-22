@@ -2,33 +2,29 @@
 
 namespace Jatun\Event;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 /**
  * @author Arno Geurts 
  */
-class HtmlEvent extends JatunEvent
-{
+class HtmlEvent extends Event
+{   
     /**
-     * Set event and arguments
-     * 
-     * @param string $event
-     * @param string $arguments 
+     * {@inheritDoc}
      */
-    public function __construct($id, $content)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        parent::__construct('jatun.html', array(
-            'id'        => '#' . $id,
-            'content'   => $content
-        ));
+        $resolver
+            ->setRequired(array(
+                'id', 'content'
+            ));
     }
     
     /**
-     * Check if event is valid
-     * 
-     * @return boolean 
+     * {@inheritDoc}
      */
-    public function validate()
+    public function getName()
     {
-        return $this->hasArgument('id') &&
-               $this->hasArgument('content');
+        return 'html';
     }
 }

@@ -2,31 +2,29 @@
 
 namespace Jatun\Event;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 /**
  * @author Arno Geurts 
  */
-class DialogCloseEvent extends JatunEvent
+class DialogCloseEvent extends Event
 {
     /**
-     * Set event and arguments
-     * 
-     * @param string $event
-     * @param string $arguments 
+     * {@inheritDoc}
      */
-    public function __construct($id)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        parent::__construct('jatun.dialog.close', array(
-            'id'    => $id,
-        ));
+        $resolver
+            ->setRequired(array(
+                'id'
+            ));
     }
     
     /**
-     * Check if event is valid
-     * 
-     * @return boolean 
+     * {@inheritDoc}
      */
-    public function validate()
+    public function getName()
     {
-        return $this->hasArgument('id');
+        return 'dialog.close';
     }
 }

@@ -1,0 +1,21 @@
+{
+    "name": "aygon/jatun",
+    "type": "library, symfony-bundle",
+    "description": "Jatun, a simple and convenient way to communicate between the server and client using ajax",
+    "keywords": ["server", "client", "ajax", "bundle"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Arno Geurts",
+            "email": "arno.geurts@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/options-resolver": "*"
+    },
+    "autoload": {
+        "psr-0" : { "Jatun" : "lib/" }
+    },
+    "minimum-stability": "dev"
+}

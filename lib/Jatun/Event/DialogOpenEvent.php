@@ -2,39 +2,33 @@
 
 namespace Jatun\Event;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 /**
  * @author Arno Geurts 
  */
-class DialogOpenEvent extends JatunEvent
+class DialogOpenEvent extends Event
 {
     /**
-     * Set event and arguments
-     * 
-     * @param string $event
-     * @param string $arguments 
+     * {@inheritDoc}
      */
-    public function __construct($id, $title, $content, array $arguments = array())
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        parent::__construct('jatun.dialog.open', array_merge(array(
-            'id'        => $id,
-            'width'     => 900,
-            'height'    => 600,
-            'title'     => $title,
-            'content'   => $content
-        ), $arguments));
+        $resolver
+            ->setRequired(array(
+                'id', 'title', 'content'
+            ))
+            ->setDefaults(array(
+                'width'     => 800,
+                'height'    => 600
+            ));
     }
     
     /**
-     * Check if event is valid
-     * 
-     * @return boolean 
+     * {@inheritDoc}
      */
-    public function validate()
+    public function getName()
     {
-        return $this->hasArgument('id') &&
-               $this->hasArgument('width') &&
-               $this->hasArgument('height') &&
-               $this->hasArgument('title') &&
-               $this->hasArgument('content');
+        return 'dialog.open';
     }
 }

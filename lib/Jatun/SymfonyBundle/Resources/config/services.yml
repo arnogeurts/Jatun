@@ -1,8 +1,38 @@
 parameters:
-    jatun.event_listener.template_listener.class: Jatun\SymfonyBundle\EventListener\TemplateListener
+    jatun.environment.class: Jatun\Environment
+    jatun.twig_extension.jatun.class: Jatun\SymfonyBundle\Twig\Extension\JatunExtension
+    jatun.event.dialog_close.class: Jatun\Event\DialogCloseEvent
+    jatun.event.dialog_open.class: Jatun\Event\DialogOpenEvent
+    jatun.event.dialog_title.class: Jatun\Event\DialogTitleEvent
+    jatun.event.html.class: Jatun\Event\HtmlEvent
 
 services:
-    jatun.event_listener.template_listener:
-        class: %jatun.event_listener.template_listener.class%
+    jatun.environment:
+        class: %jatun.environment.class%
+        
+    jatun.twig_extension.jatun:
+        class: %jatun.twig_extension.jatun.class%
+        arguments: ["@jatun.environment"]
         tags:
-            - { name: kernel.event_listener, event: kernel.view, method: onKernelView }
+            - { name: twig.extension }
+        
+    jatun.event.dialog_close:
+        class: %jatun.event.dialog_close.class%
+        tags:
+            - { name: jatun.event }
+            
+    jatun.event.dialog_open:
+        class: %jatun.event.dialog_open.class%
+        tags:
+            - { name: jatun.event }
+    
+    jatun.event.dialog_title:
+        class: %jatun.event.dialog_title.class%
+        tags:
+            - { name: jatun.event }   
+            
+    jatun.event.html:
+        class: %jatun.event.html.class%
+        tags:
+            - { name: jatun.event }
+    

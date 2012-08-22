@@ -18,16 +18,32 @@ $.jatunRequest = function(data) {
     });
 }
 
+/**
+ * Add jatun function to all element so
+ * An element click results into a ajax-jatun request
+ */ 
 $.fn.jatun = function() {
     $(this).bind('click', function(e) {
         e.preventDefault();
         
-        if ($(this).attr('href') != undefined) {
-            var path = $(this).attr('href');
+        var data = {};
+        
+        if ($(this).is('form')) {
+            data = {
+                url: $(this).attr('action'),
+                type: $(this).attr('method')
+            };
+        } else if ($(this).is('a')) {
+            data = { 
+                url: $(this).attr('href') 
+            };
         } else {
-            var path = $(this).data('path');
+            data = { 
+                url: $(this).data('path') 
+            };
         }
-        $.jatunRequest({ url: path });
+        
+        $.jatunRequest(data);
     });
 }
 
@@ -42,23 +58,34 @@ $(document).ready(function() {
  * Convert all jatun links into ajax calls
  */
 $(document).bind('jatun.parse', function(e, element) {
-    $(element).find('.jatun-link').jatun();
+    $(element).find('.jatun').jatun();
 });
 
 /**
- * set html of given object
+ * Set html of given element by id
+ * 
+ * Arguments:
+ * id -- the id of the dom element
+ * content -- the content to be set in the element
  */
 $(document).bind('jatun.html', function(event, arguments) {
-    $(arguments.id).html(arguments.content);
-    $(document).triggerHandler('jatun.parse', [arguments.id]);
+    $('#' + arguments.id).html(arguments.content);
+    $(document).triggerHandler('jatun.parse', [ '#' + arguments.id ]);
 });
 
 /**
- * open dialog
+ * Open dialog
+ * 
+ * Arguments:
+ * id -- the id of the dom element to be generated
+ * title -- the title of the dialog
+ * content -- the content of the dialog
+ * width -- the width of the dialog
+ * height -- the height of the dialog
  */
 $(document).bind('jatun.dialog.open', function(event, arguments) {
     // remove all elements with given id
-    $(document).triggerHandler('close_dialog', [arguments]);
+    $(document).triggerHandler('jatun.dialog.close', [arguments]);
     
     var d = $('<div id="' + arguments.id + '" title="' + arguments.title + '">' + arguments.content + '</div>');
     
@@ -78,7 +105,10 @@ $(document).bind('jatun.dialog.open', function(event, arguments) {
 });
 
 /**
- * close dialog
+ * Close dialog
+ * 
+ * Arguments:
+ * id -- the dom element id of the dialog to be closed
  */
 $(document).bind('jatun.dialog.close', function(event, arguments) {
     if ($('#' + arguments.id).dialog('isOpen') == true) {
@@ -91,7 +121,11 @@ $(document).bind('jatun.dialog.close', function(event, arguments) {
 });
 
 /**
- * set dialog title
+ * Set dialog title
+ * 
+ * Arguments:
+ * id -- the id of the dom element of the dialog
+ * title -- the title of the dialog to be set
  */
 $(document).bind('jatun.dialog.title', function(event, arguments) {
     if ($('#' + arguments.id).dialog('isOpen') == true) {

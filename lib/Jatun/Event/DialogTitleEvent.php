@@ -2,33 +2,29 @@
 
 namespace Jatun\Event;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 /**
  * @author Arno Geurts 
  */
-class DialogTitleEvent extends JatunEvent
+class DialogTitleEvent extends Event
 {
     /**
-     * Set event and arguments
-     * 
-     * @param string $event
-     * @param string $arguments 
+     * {@inheritDoc}
      */
-    public function __construct($id, $title)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        parent::__construct('jatun.dialog.title', array(
-            'id'        => $id,
-            'title'     => $title
-        ));
+        $resolver
+            ->setRequired(array(
+                'id', 'title'
+            ));
     }
     
     /**
-     * Check if event is valid
-     * 
-     * @return boolean 
+     * {@inheritDoc}
      */
-    public function validate()
+    public function getName()
     {
-        return $this->hasArgument('id') &&
-               $this->hasArgument('title');
-    }
+        return 'dialog.title';
+    }           
 }

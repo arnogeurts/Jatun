@@ -1,1 +1,4 @@
 nbproject
+phpunit.xml
+vendor
+test/report
