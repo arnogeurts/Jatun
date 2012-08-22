@@ -13,26 +13,31 @@ services:
     jatun.twig_extension.jatun:
         class: %jatun.twig_extension.jatun.class%
         arguments: ["@jatun.environment"]
+        public: false
         tags:
             - { name: twig.extension }
         
     jatun.event.dialog_close:
         class: %jatun.event.dialog_close.class%
+        public: false
         tags:
             - { name: jatun.event }
             
     jatun.event.dialog_open:
         class: %jatun.event.dialog_open.class%
+        public: false
         tags:
             - { name: jatun.event }
     
     jatun.event.dialog_title:
         class: %jatun.event.dialog_title.class%
+        public: false
         tags:
             - { name: jatun.event }   
             
     jatun.event.html:
         class: %jatun.event.html.class%
+        public: false
         tags:
             - { name: jatun.event }
     
