@@ -2,6 +2,8 @@
 
 namespace Jatun\Event;
 
+use Jatun\Collection\CollectionInterface;
+
 /**
  * EventInterface
  *
@@ -10,21 +12,11 @@ namespace Jatun\Event;
 interface EventInterface 
 {
     /**
-     * Cast the given event to an array of event arrays
+     * Populate the given collection
      * 
-     * example:
-     *  Array (
-     *      Array (
-     *          'event': [name]
-     *          'arguments': [arguments]
-     *      ),
-     *      ...
-     *  )
-     * 
-     * @param array $arguments
-     * @return array
+     * @param CollectionInterface $collection
      */
-    public function toArray(array $argumentsm = array());
+    public function build(CollectionInterface $collection, array $arguments = array());
     
     /**
      * Get the name of the event

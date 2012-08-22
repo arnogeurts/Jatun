@@ -2,6 +2,7 @@
 
 namespace Jatun\Mocks\Event;
 
+use Jatun\Collection\CollectionInterface;
 use Jatun\Event\EventInterface;
 
 class TestEvent implements EventInterface
@@ -11,12 +12,9 @@ class TestEvent implements EventInterface
      * 
      * @param array $arguments
      */
-    public function toArray(array $arguments = array())
+    public function build(CollectionInterface $collection, array $arguments = array())
     {
-        return array(array(
-            'event'     => 'jatun.' . $this->getName(),
-            'arguments' => array_merge($arguments, array('additional1' => 1, 'additional2' => 2))
-        ));
+        $collection->add($this->getName(), array_merge($arguments, array('additional1' => 1, 'additional2' => 2)));
     }
     
     /**

@@ -2,6 +2,7 @@
 
 namespace Jatun\Event;
 
+use Jatun\Collection\CollectionInterface;
 use Jatun\Exception\InvalidArgumentException;
 use Symfony\Component\OptionsResolver\Exception\ExceptionInterface as OptionsResolverException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,7 +24,7 @@ abstract class Event implements EventInterface
     /**
      * {@inheritDoc}
      */
-    public function toArray(array $arguments = array())
+    public function build(CollectionInterface $collection, array $arguments = array())
     {
         $resolver = new OptionsResolver();
         $this->setDefaultOptions($resolver);
@@ -35,10 +36,7 @@ abstract class Event implements EventInterface
             throw new InvalidArgumentException(sprintf('Invalid arguments supplied for event %s', $this->getName()));
         }
         
-        return array(array(
-            'event'     => 'jatun.' . $this->getName(),
-            'arguments' => $args
-        ));
+        $collection->add($this->getName(), $args);
     }
     
 }

@@ -1,4 +1,4 @@
 nbproject
 phpunit.xml
 vendor
-test/report
+tests/report

@@ -10,13 +10,14 @@ class DialogOpenEventTest extends \PHPUnit_Framework_TestCase
     public function testDialogOpenEvent()
     {
         $eventObject = new \Jatun\Event\DialogOpenEvent();
-        $data = $eventObject->toArray(array(
+        $collection = new \Jatun\Collection\DefaultCollection();
+        $eventObject->build($collection, array(
             'id'        => 'foo',
             'title'     => 'bar',
             'content'   => 'foobar',
             'height'    => 700
         ));
-        $event = array_pop($data);
+        $event = array_pop($collection->toArray());
         
         $this->assertEquals('jatun.dialog.open', $event['event'], 'the javascript event is "jatun.dialog.open"');
         $this->assertEquals('foo', $event['arguments']['id'], 'the value set above is passed as argument');

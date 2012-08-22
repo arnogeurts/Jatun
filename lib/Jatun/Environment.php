@@ -4,6 +4,8 @@ namespace Jatun;
 
 use Jatun\Codec\CodecInterface;
 use Jatun\Codec\PhpJsonCodec;
+use Jatun\Collection\CollectionInterface;
+use Jatun\Collection\DefaultCollection;
 use Jatun\Event\EventInterface;
 use Jatun\Exception\UnknownEventException;
 
@@ -92,27 +94,16 @@ class Environment
      * @param array $data
      * @return array 
      */
-    public function parse(array $data)
+    public function parse(array $data, CollectionInterface $collection = null)
     {
-        $events = $this->toArray($data);
-        return $this->getCodec()->encode($events);
-    }
-    
-    /**
-     * Cast data array to Jatun array
-     * 
-     * @param array $data
-     * @return array 
-     */
-    protected function toArray(array $data)
-    {
-        $events = array();
-        
-        foreach ($data as $event => $arguments) {
-            $list = $this->getEvent($event)->toArray($arguments);
-            $events = array_merge($events, $list);
+        if ($collection === null) {
+            $collection = new DefaultCollection();
         }
         
-        return $events;
+        foreach ($data as $event => $arguments) {
+            $this->getEvent($event)->build($collection, $arguments);
+        }
+
+        return $this->getCodec()->encode($collection->toArray());
     }
 }

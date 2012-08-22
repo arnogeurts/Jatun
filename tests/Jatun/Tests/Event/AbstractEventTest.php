@@ -12,8 +12,9 @@ class AbstractEventTest extends \PHPUnit_Framework_TestCase
     public function testAbstractEventException()
     {
         $event = new \Jatun\Mocks\Event\TestAbstractEvent();
+        $collection = new \Jatun\Collection\DefaultCollection();
         $this->setExpectedException('Jatun\Exception\InvalidArgumentException');
-        $event->toArray();
+        $event->build($collection);
     }
     
     /**
@@ -22,8 +23,9 @@ class AbstractEventTest extends \PHPUnit_Framework_TestCase
     public function testAbstractEventToArray()
     {
         $eventObject = new \Jatun\Mocks\Event\TestAbstractEvent();
-        $data = $eventObject->toArray(array('foo' => 'bar'));
-        $event = array_pop($data);
+        $collection = new \Jatun\Collection\DefaultCollection();
+        $eventObject->build($collection, array('foo' => 'bar'));
+        $event = array_pop($collection->toArray());
         
         $this->assertTrue(is_array($event), 'the output exists of an array of event arrays');
         $this->assertTrue(array_key_exists('event', $event), 'there is a key in the event array named "event"');

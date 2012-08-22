@@ -10,11 +10,12 @@ class DialogTitleEventTest extends \PHPUnit_Framework_TestCase
     public function testDialogTitleEvent()
     {
         $eventObject = new \Jatun\Event\DialogTitleEvent();
-        $data = $eventObject->toArray(array(
+        $collection = new \Jatun\Collection\DefaultCollection();
+        $eventObject->build($collection, array(
             'id'        => 'foo',
             'title'     => 'bar'
         ));
-        $event = array_pop($data);
+        $event = array_pop($collection->toArray());
         
         $this->assertEquals('jatun.dialog.title', $event['event'], 'the javascript event is "jatun.dialog.title"');
         $this->assertEquals('foo', $event['arguments']['id'], 'the value set above is passed as argument');
