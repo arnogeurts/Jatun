@@ -5,7 +5,8 @@ parameters:
     jatun.event.dialog_open.class: Jatun\Event\DialogOpenEvent
     jatun.event.dialog_title.class: Jatun\Event\DialogTitleEvent
     jatun.event.html.class: Jatun\Event\HtmlEvent
-
+    jatun.event.flashmessage.class: Jatun\Event\FlashmessageEvent
+    
 services:
     jatun.environment:
         class: %jatun.environment.class%
@@ -41,3 +42,8 @@ services:
         tags:
             - { name: jatun.event }
     
+    jatun.event.flashmessage:
+        class: %jatun.event.flashmessage.class%
+        public: false
+        tags:
+            - { name: jatun.event }

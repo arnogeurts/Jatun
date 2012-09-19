@@ -23,28 +23,35 @@ $.jatunRequest = function(data) {
  * An element click results into a ajax-jatun request
  */ 
 $.fn.jatun = function() {
-    $(this).bind('click', function(e) {
-        e.preventDefault();
-        
-        var data = {};
-        
-        if ($(this).is('form')) {
-            data = {
+    if ($(this).is('form')) {
+        $(this).bind('submit', function(e) { 
+            e.preventDefault();
+            
+            $.jatunRequest({
                 url: $(this).attr('action'),
-                type: $(this).attr('method')
-            };
-        } else if ($(this).is('a')) {
-            data = { 
-                url: $(this).attr('href') 
-            };
-        } else {
-            data = { 
-                url: $(this).data('path') 
-            };
-        }
-        
-        $.jatunRequest(data);
-    });
+                type: $(this).attr('method'),
+                data: $(this).serialize()
+            });
+        });
+    } else {
+        $(this).bind('click', function(e) {
+            e.preventDefault();
+
+            var data = {};
+
+            if ($(this).is('a')) {
+                data = { 
+                    url: $(this).attr('href') 
+                };
+            } else {
+                data = { 
+                    url: $(this).data('path') 
+                };
+            }
+
+            $.jatunRequest(data);
+        });
+    }
 }
 
 /**
@@ -131,4 +138,28 @@ $(document).bind('jatun.dialog.title', function(event, arguments) {
     if ($('#' + arguments.id).dialog('isOpen') == true) {
         $('#' + arguments.id).dialog('option', 'title', arguments.title);
     }
-})
+});
+
+/**
+ * Add a flashmessage
+ * 
+ * Arguments:
+ * id -- the id of the dom element where to prepend the message to
+ * level -- the level of flashmessage (error, notice, success)
+ * text -- the text of the flashmessage
+ * duration -- the time the message is visible
+ */
+$(document).bind('jatun.flashmessage', function(event, arguments) {
+    var elem = $('<div style="display: none;" class="flash flash-' + arguments.level + '">' + arguments.text + '</div>');
+    $('#' + arguments.id).prepend(elem);
+
+    var duration = parseInt(arguments.duration);
+    
+    elem.slideDown(200, function() {
+        setTimeout(function() {
+            elem.slideUp(200, function() {
+                elem.remove();
+            });
+        }, duration);
+    });
+});

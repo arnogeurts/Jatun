@@ -31,4 +31,23 @@ class DefaultCollection implements CollectionInterface
     {
         return $this->events;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function fromArray(array $array)
+    {
+        foreach ($array as $event) {
+            // check if the event is valid
+            $valid = is_array($event) && 
+                     array_key_exists('event', $event) && 
+                     substr($event['event'], 0, 6) == 'jatun.' && 
+                     array_key_exists('arguments', $event) && 
+                     is_array($event['arguments']);
+            
+            if ($valid) {
+                $this->add(substr($event['event'], 6), $event['arguments']);
+            }
+        }
+    }
 }

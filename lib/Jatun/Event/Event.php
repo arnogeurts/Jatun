@@ -26,6 +26,18 @@ abstract class Event implements EventInterface
      */
     public function build(CollectionInterface $collection, array $arguments = array())
     {
+        $args = $this->getArguments($arguments);
+        $collection->add($this->getName(), $args);
+    }
+    
+    /**
+     * Get the arguments passed to the event
+     * 
+     * @return array
+     * @throws InvalidArgumentException
+     */
+    protected function getArguments(array $arguments = array())
+    {
         $resolver = new OptionsResolver();
         $this->setDefaultOptions($resolver);
         
@@ -36,7 +48,6 @@ abstract class Event implements EventInterface
             throw new InvalidArgumentException(sprintf('Invalid arguments supplied for event %s', $this->getName()));
         }
         
-        $collection->add($this->getName(), $args);
-    }
-    
+        return $args;
+    }   
 }

@@ -18,6 +18,15 @@ interface CollectionInterface
     
     /**
      * Cast the collection to an array
+     * 
+     * @return array
      */
     public function toArray();
+    
+    /**
+     * Load data to the collection from a casted array
+     * 
+     * @param array $array
+     */
+    public function fromArray(array $array);
 }
