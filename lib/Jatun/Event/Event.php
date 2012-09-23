@@ -48,6 +48,10 @@ abstract class Event implements EventInterface
             throw new InvalidArgumentException(sprintf('Invalid arguments supplied for event %s', $this->getName()));
         }
         
+        foreach ($args as &$arg) {
+            $arg = (string)$arg;
+        }
+        
         return $args;
     }   
 }
