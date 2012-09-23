@@ -92,9 +92,24 @@ class Environment
      * Cast a data array to a Jatun string
      * 
      * @param array $data
+     * @param CollectionInterface $collection
      * @return array 
      */
     public function parse(array $data, CollectionInterface $collection = null)
+    {
+        $collection = $this->build($data, $collection);
+
+        return $this->getCodec()->encode($collection->toArray());
+    }
+    
+    /**
+     * Build the collection form the an array of event data
+     * 
+     * @param array $data
+     * @param CollectionInterface $collection
+     * @return array 
+     */
+    public function build(array $data, CollectionInterface $collection = null)
     {
         if ($collection === null) {
             $collection = new DefaultCollection();
@@ -103,7 +118,7 @@ class Environment
         foreach ($data as $event => $arguments) {
             $this->getEvent($event)->build($collection, $arguments);
         }
-
-        return $this->getCodec()->encode($collection->toArray());
+        
+        return $collection;
     }
 }

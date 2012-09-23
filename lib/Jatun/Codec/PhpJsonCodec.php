@@ -9,7 +9,13 @@ class PhpJsonCodec implements CodecInterface
      */
     public function encode(array $array)
     {
-        return json_encode($array);
+        $encode = json_encode($array);
+        
+        if ( ! $encode) {
+            return '{}'; // return an empty json object
+        }
+        
+        return $encode;
     }
     
     /**
@@ -17,6 +23,12 @@ class PhpJsonCodec implements CodecInterface
      */
     public function decode($string)
     {
-        return json_decode($string, true);
+        $decode = json_decode($string, true);
+        
+        if ($decode === null) {
+            return array();  // return an empty array
+        }
+            
+        return $decode;
     }
 }
