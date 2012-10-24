@@ -64,7 +64,6 @@ based on its id.
 ```php
 $env->addEvent(\Jatun\Event\HtmlEvent())
 
-
 echo $env->parse(array(
     'html' => array(
         'id'      => 'html-node-id',
@@ -81,7 +80,6 @@ html node based on its id.
 ##### Usage
 ```php
 $env->addEvent(\Jatun\Event\FlashmessageEvent())
-
 
 echo $env->parse(array(
     'flashmessage' => array(
@@ -103,7 +101,6 @@ given id, title and content
 ##### Usage
 ```php
 $env->addEvent(\Jatun\Event\DialogOpenEvent())
-
 
 echo $env->parse(array(
     'dialog.open' => array(
@@ -127,7 +124,6 @@ dialog based on its id.
 ```php
 $env->addEvent(\Jatun\Event\DialogTitleEvent())
 
-
 echo $env->parse(array(
     'dialog.title' => array(
         'id'       => 'dialog-id',
@@ -145,7 +141,6 @@ its id.
 ##### Usage
 ```php
 $env->addEvent(\Jatun\Event\DialogCloseEvent())
-
 
 echo $env->parse(array(
     'dialog.close' => array(
@@ -171,9 +166,8 @@ jQuery-UI and the Jatun library should be included:
 ```
 
 In order to change click behavior on an element, or submit behavior of a form 
-the following javascript can be used. If the selected element is not an <a> or
-<form> tag, Jatun tries to find a data-path attribute on the element (i.e. 
-<span data-path="/index.php">clickable</span>):
+the following javascript can be used. If the selected element is not an a or
+form tag, Jatun tries to find a data-path attribute on the element:
 
 ```javascript
 $(selector).jatun()
