@@ -83,11 +83,10 @@ $env->addEvent(\Jatun\Event\FlashmessageEvent())
 
 echo $env->parse(array(
     'flashmessage' => array(
-        'id'       => 'html-node-id',
-        'level'    => 'error|notice|success',
-        'text'     => 'the text of the flashmessage',
+        'id'                   => 'html-node-id',
+        'error|notice|success' => 'the text of the flashmessage',
         [optional]
-        'duration' => 3000 // ms
+        'duration'             => 3000 // ms
     )
 );
 ```
