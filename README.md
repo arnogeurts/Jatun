@@ -189,4 +189,7 @@ Symfony Bundle
 
 Jatun also comes with a built in Symfony Bundle for easy integration in your
 Symfony project. For the Symfony bundle documentation see 
-[bundle docs][https://github.com/arnogeurts/Jatun/blob/master/lib/Jatun/SymfonyBundle/Resources/doc/index.md]
+[bundle docs][1]
+
+
+[1]: https://github.com/arnogeurts/Jatun/blob/master/lib/Jatun/SymfonyBundle/Resources/doc/index.md

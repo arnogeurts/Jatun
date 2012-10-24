@@ -3,8 +3,7 @@ Symfony Bundle
 
 >#Note
 >This documentation only describes the addition of the Symfony bundle the the 
->Jatun library, for the full library documentation see 
->[full docs][https://github.com/arnogeurts/Jatun/blob/master/README.md]
+>Jatun library, for the full library documentation see [full docs][1]
 
 
 This bundle adds Jatun functionality to a Symfony project. The environment
@@ -49,3 +48,6 @@ a set-block:
 }}
 ```
 
+
+
+[1]: https://github.com/arnogeurts/Jatun/blob/master/README.md
