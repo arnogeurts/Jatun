@@ -105,7 +105,8 @@ $(document).bind('jatun.dialog.open', function(event, arguments) {
         modal: true,
         close: function(event, ui) {
             $(this).remove();
-        }
+        },
+        buttons: eval('(' + arguments.buttons + ')')
     });
     
     $(document).triggerHandler('jatun.parse', [ '#'+arguments.id ]);

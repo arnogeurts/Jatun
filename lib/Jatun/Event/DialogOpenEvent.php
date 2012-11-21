@@ -20,7 +20,8 @@ class DialogOpenEvent extends Event
             ))
             ->setDefaults(array(
                 'width'     => 800,
-                'height'    => 600
+                'height'    => 600,
+                'buttons'   => '{}' // empty array
             ));
     }
     
