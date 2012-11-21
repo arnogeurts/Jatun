@@ -1,6 +1,6 @@
 {
     "name": "aygon/jatun",
-    "type": "library, symfony-bundle",
+    "type": "library",
     "description": "Jatun, a simple and convenient way to communicate between the server and client using ajax",
     "keywords": ["server", "client", "ajax", "bundle"],
     "license": "MIT",
