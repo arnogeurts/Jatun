@@ -49,6 +49,8 @@ class FlashmessageEvent extends Event
                 $arguments['text'] = $arguments['success'];
                 unset($arguments['success']);
                 break;
+            default:
+                // do nothing
         }
         
         return parent::getArguments($arguments);

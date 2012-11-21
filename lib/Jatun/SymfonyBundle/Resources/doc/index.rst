@@ -1,1 +1,0 @@
-Adds Jatun functionality to Symfony2
