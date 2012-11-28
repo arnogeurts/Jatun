@@ -119,11 +119,11 @@ $(document).bind('jatun.dialog.open', function(event, arguments) {
  * id -- the dom element id of the dialog to be closed
  */
 $(document).bind('jatun.dialog.close', function(event, arguments) {
-    if ($('#' + arguments.id).dialog('isOpen') == true) {
-        $('#' + arguments.id).dialog('close');
-    }
-    
     if ($('#' + arguments.id).length > 0) {
+        if ($('#' + arguments.id).dialog('isOpen') == true) {
+            $('#' + arguments.id).dialog('close');
+        }
+        
         $('#' + arguments.id).remove();
     }
 });
