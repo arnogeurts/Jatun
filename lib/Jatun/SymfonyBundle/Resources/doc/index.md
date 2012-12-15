@@ -14,6 +14,23 @@ Also the Jatun javascript library is, using a symlink, added to the Resources/js
 directory.
 
 
+Bundle installation
+-------------------
+To install the bundle, follow the installation manual from the library documentation 
+and in addition to that add the following lines to your app/AppKernel.php:
+
+```php
+// app/AppKernel.php
+public function registerBundles()
+{
+    $bundles = array(
+        //...
+        new Jatun\SymfonyBundle\JatunSymfonyBundle(),
+    );
+}
+```
+
+
 Twig extension
 --------------
 

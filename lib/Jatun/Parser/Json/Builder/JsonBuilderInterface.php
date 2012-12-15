@@ -1,11 +1,11 @@
 <?php
 
-namespace Jatun\Collection;
+namespace Jatun\Parser\Json\Builder;
 
 /**
  * @author Arno Geurts
  */
-interface CollectionInterface
+interface JsonBuilderInterface
 {
     /**
      * Add an event to the collection
@@ -22,11 +22,4 @@ interface CollectionInterface
      * @return array
      */
     public function toArray();
-    
-    /**
-     * Load data to the collection from a casted array
-     * 
-     * @param array $array
-     */
-    public function fromArray(array $array);
 }
