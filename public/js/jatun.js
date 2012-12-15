@@ -26,12 +26,14 @@ $.fn.jatun = function() {
     if ($(this).is('form')) {
         $(this).bind('submit', function(e) { 
             e.preventDefault();
-            
-            $.jatunRequest({
-                url: $(this).attr('action'),
-                type: $(this).attr('method'),
-                data: $(this).serialize()
-            });
+           
+            if ($(this).data('confirm') == undefined || confirm($(this).data('confirm'))) { 
+                $.jatunRequest({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize()
+                });
+            }
         });
     } else {
         $(this).bind('click', function(e) {
@@ -49,7 +51,9 @@ $.fn.jatun = function() {
                 };
             }
 
-            $.jatunRequest(data);
+            if ($(this).data('confirm') == undefined || confirm($(this).data('confirm'))) {
+                $.jatunRequest(data);
+            }
         });
     }
 }
@@ -65,7 +69,9 @@ $(document).ready(function() {
  * Convert all jatun links into ajax calls
  */
 $(document).bind('jatun.parse', function(e, element) {
-    $(element).find('.jatun').jatun();
+    $(element).find('.jatun').each(function(index, element) {
+	$(element).jatun();
+    });
 });
 
 /**
