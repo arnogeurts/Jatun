@@ -6,6 +6,12 @@
 $.jatunRequest = function(data) {
     $('body').addClass('wait');
     
+    if (data in data) {
+    	data.data += '&jatun=1'
+    } else {
+    	data.data = 'jatun=1'
+    }
+    
     data.dataType = 'json';
     data.success = function(response) {
         $.each(response, function(index, event) {
