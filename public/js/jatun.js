@@ -5,11 +5,18 @@
  */
 $.jatunRequest = function(data) {
     $('body').addClass('wait');
-    
-    if (data in data) {
-    	data.data += '&jatun=1'
-    } else {
-    	data.data = 'jatun=1'
+   
+    switch (typeof data.data) {
+    	case "undefined":
+    		data.data = 'jatun=1';
+    		break;
+    	case "object":
+    		data.data.jatun = 1;
+    		break;
+    	case "string":
+    	default:
+    		data.data += '&jatun=1';
+    		break;
     }
     
     data.dataType = 'json';
