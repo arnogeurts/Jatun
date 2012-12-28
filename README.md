@@ -26,7 +26,6 @@ $ php composer.phar update
 ```
 
 
-
 Application - PHP
 -----------------
 
@@ -183,12 +182,16 @@ $.jatunRequest({
 ```
 
 
+Writing custom events
+---------------------
+In order to create a custom event, a 
+
+
 Symfony Bundle
 --------------
 
 Jatun also comes with a built in Symfony Bundle for easy integration in your
 Symfony project. For the Symfony bundle documentation see 
 [bundle docs][1]
-
 
 [1]: https://github.com/arnogeurts/Jatun/blob/master/lib/Jatun/SymfonyBundle/Resources/doc/index.md

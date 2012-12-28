@@ -2,13 +2,8 @@
 
 namespace Jatun;
 
-use Jatun\Codec\CodecInterface;
-use Jatun\Codec\PhpJsonCodec;
-use Jatun\Collection\CollectionInterface;
-use Jatun\Collection\DefaultCollection;
 use Jatun\Event\EventInterface;
-use Jatun\Exception\UnknownEventException;
-
+use Jatun\Parser\Json\JsonParserInterface;
 /**
  * Description of Environment
  *
@@ -17,13 +12,13 @@ use Jatun\Exception\UnknownEventException;
 class Environment 
 {
     /**
-     * The codec used to encode and decode data
-     * @var CodecInterface
+     * The jatun response encoder
+     * @var EncoderInterface
      */
-    protected $codec;
+    protected $encoder;
     
     /**
-     * The possible jatun events
+     * The available jatun events
      * @var array
      */
     protected $events = array();
@@ -34,32 +29,9 @@ class Environment
      * 
      * @param CodecInterface $codec 
      */
-    public function __construct(CodecInterface $codec = null)
+    public function __construct(EncoderInterface $encoder)
     {
-        if ($codec === null) {
-            $codec = new PhpJsonCodec();
-        }
-        $this->setCodec($codec);
-    }
-    
-    /**
-     * Set the codec for encoding the events
-     * 
-     * @param CodecInterface $codec 
-     */
-    public function setCodec(CodecInterface $codec)
-    {
-        $this->codec = $codec;
-    }
-    
-    /**
-     * Get the codec for encoding the events
-     * 
-     * @return CodecInterface
-     */
-    public function getCodec()
-    {
-        return $this->codec;
+        $this->encoder = $encoder;
     }
     
     /**
@@ -67,7 +39,7 @@ class Environment
      * 
      * @param EventInterface $event
      */
-    public function addEvent(EventInterface $event)
+    public function add(EventInterface $event)
     {
         $this->events[$event->getName()] = $event;
     }
@@ -79,7 +51,7 @@ class Environment
      * @return EventInterface 
      * @throws UnknownEventException if the given event name does not exist
      */
-    public function getEvent($name)
+    public function get($name)
     {
         if ( ! array_key_exists($name, $this->events)) {
             throw new UnknownEventException(sprintf('No event named "%s" found', $name));
@@ -92,33 +64,32 @@ class Environment
      * Cast a data array to a Jatun string
      * 
      * @param array $data
-     * @param CollectionInterface $collection
-     * @return array 
+     * @return string 
      */
-    public function parse(array $data, CollectionInterface $collection = null)
+    public function createResponse(array $data)
     {
-        $collection = $this->build($data, $collection);
-
-        return $this->getCodec()->encode($collection->toArray());
+        $collector = new DataCollector();
+        
+        foreach ($data as $event => $arguments) {
+            $this->get($event)->build($collector, $arguments);
+        }
+        
+        return $this->encoder->encode($collection->toArray());
     }
     
     /**
-     * Build the collection form the an array of event data
+     * Create javascript source for he available events
      * 
-     * @param array $data
-     * @param CollectionInterface $collection
-     * @return array 
+     * @return string
      */
-    public function build(array $data, CollectionInterface $collection = null)
+    public function createJavascript()
     {
-        if ($collection === null) {
-            $collection = new DefaultCollection();
+    	$collector = new JavascriptEventCollector();
+    	
+    	foreach ($this->events as $event) {
+            $event->javascript($collector);
         }
         
-        foreach ($data as $event => $arguments) {
-            $this->getEvent($event)->build($collection, $arguments);
-        }
-        
-        return $collection;
+        return $this->javascriptBuilder->build($collector);
     }
 }

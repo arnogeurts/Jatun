@@ -2,7 +2,7 @@
 
 namespace Jatun\Event;
 
-use Jatun\Collection\CollectionInterface;
+use Jatun\Parser\Json\Builder\JsonBuilderInterface;
 use Jatun\Exception\InvalidArgumentException;
 use Symfony\Component\OptionsResolver\Exception\ExceptionInterface as OptionsResolverException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,10 +24,10 @@ abstract class Event implements EventInterface
     /**
      * {@inheritDoc}
      */
-    public function build(CollectionInterface $collection, array $arguments = array())
+    public function build(JsonBuilderInterface $builder, array $arguments = array())
     {
         $args = $this->getArguments($arguments);
-        $collection->add($this->getName(), $args);
+        $builder->add($this->getName(), $args);
     }
     
     /**
