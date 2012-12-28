@@ -1,11 +1,11 @@
 <?php
 
-namespace Jatun\Parser\Json\Builder;
+namespace Jatun\Response;
 
 /**
  * @author Arno Geurts
  */
-class JsonBuilder implements JsonBuilderInterface
+class DataCollector
 {
     /**
      * The events added to the collection

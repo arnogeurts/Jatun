@@ -1,6 +1,6 @@
 <?php
 
-namespace Jatun\Parser\Json\Encoder;
+namespace Jatun\Response\Encoder;
 
 interface EncoderInterface
 {

@@ -12,16 +12,16 @@ use Jatun\Parser\Json\JsonParserInterface;
 class Environment 
 {
     /**
-     * The event parser to parse the event data to json
-     * @var JsonParserInterface
+     * The jatun response encoder
+     * @var EncoderInterface
      */
-    protected $json;
+    protected $encoder;
     
     /**
-     * The possible jatun events
+     * The available jatun events
      * @var array
      */
-    protected $events;
+    protected $events = array();
     
     /**
      * Inject the jatun codec
@@ -29,10 +29,9 @@ class Environment
      * 
      * @param CodecInterface $codec 
      */
-    public function __construct(JsonParserInterface $jsonParser)
+    public function __construct(EncoderInterface $encoder)
     {
-        $this->jsonParser = $jsonParser;
-        $this->events = new EventCollection();
+        $this->encoder = $encoder;
     }
     
     /**
@@ -40,20 +39,57 @@ class Environment
      * 
      * @param EventInterface $event
      */
-    public function addEvent(EventInterface $event)
+    public function add(EventInterface $event)
     {
-        $this->events->add($event);
+        $this->events[$event->getName()] = $event;
+    }
+    
+    /**
+     * Get an event by name
+     * 
+     * @param string $name
+     * @return EventInterface 
+     * @throws UnknownEventException if the given event name does not exist
+     */
+    public function get($name)
+    {
+        if ( ! array_key_exists($name, $this->events)) {
+            throw new UnknownEventException(sprintf('No event named "%s" found', $name));
+        }
+        
+        return $this->events[$name];
     }
     
     /**
      * Cast a data array to a Jatun string
      * 
      * @param array $data
-     * @param CollectionInterface $collection
-     * @return array 
+     * @return string 
      */
-    public function parse(array $data)
+    public function createResponse(array $data)
     {
-        $this->jsonParser->parse($data, $this->events);
+        $collector = new DataCollector();
+        
+        foreach ($data as $event => $arguments) {
+            $this->get($event)->build($collector, $arguments);
+        }
+        
+        return $this->encoder->encode($collection->toArray());
+    }
+    
+    /**
+     * Create javascript source for he available events
+     * 
+     * @return string
+     */
+    public function createJavascript()
+    {
+    	$collector = new JavascriptEventCollector();
+    	
+    	foreach ($this->events as $event) {
+            $event->javascript($collector);
+        }
+        
+        return $this->javascriptBuilder->build($collector);
     }
 }

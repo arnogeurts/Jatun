@@ -2,21 +2,29 @@
 
 namespace Jatun\Event;
 
-use Jatun\Collection\CollectionInterface;
+use Jatun\Response\DataCollector;
+use Jatun\Javascript\Event\
 
 /**
  * EventInterface
  *
  * @author Arno Geurts
  */
-interface EventInterface 
+interface EventInterface
 {
     /**
-     * Populate the given collection
+     * Populate the event collector with the javascript event handler
      * 
-     * @param CollectionInterface $collection
+     * @param JavascriptEventCollector $collector
      */
-    public function build(CollectionInterface $collection, array $arguments = array());
+    public function javascript(JavascriptEventCollector $collector); 
+    
+    /**
+     * Populate the given collector
+     * 
+     * @param DataCollector $collector
+     */
+    public function build(DataCollector $collector, array $arguments = array());
     
     /**
      * Get the name of the event
@@ -27,4 +35,3 @@ interface EventInterface
     public function getName();
 }
 
-?>

@@ -1,11 +1,11 @@
 <?php
 
-namespace Jatun\Parser\Json\Encoder;
+namespace Jatun\Response\Encoder;
 
 class PhpJsonEncoder implements EncoderInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function encode(array $array)
     {
