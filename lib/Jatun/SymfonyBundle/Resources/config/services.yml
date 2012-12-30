@@ -6,10 +6,15 @@ parameters:
     jatun.event.dialog_title.class: Jatun\Event\DialogTitleEvent
     jatun.event.html.class: Jatun\Event\HtmlEvent
     jatun.event.flashmessage.class: Jatun\Event\FlashmessageEvent
+    jatun.event_listener.class: Jatun\SymfonyBundle\EventListener\JatunEventListener
     
 services:
     jatun.environment:
         class: %jatun.environment.class%
+        arguments: ["@jatun.response_encoder", "@jatun.javascript_builder"]
+        
+    jatun.response_encoder:
+        
         
     jatun.twig_extension.jatun:
         class: %jatun.twig_extension.jatun.class%
@@ -17,6 +22,11 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+            
+    jatun.event_listener:
+        class: %jatun.event_listener.class%
+        tags:
+            - { name: kernel.event_subscriber }
         
     jatun.event.dialog_close:
         class: %jatun.event.dialog_close.class%

@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="jatun.environment.class">Jatun\Environment</parameter>
+        <parameter key="jatun.codec.class">Jatun\Codec\PhpJsonCodec</parameter>
+        <parameter key="jatun.javascript_builder.class">Jatun\Javascript\JavascriptBuilder</parameter>
+        <parameter key="jatun.twig_extension.class">Jatun\SymfonyBundle\Twig\Extension\JatunExtension</parameter>
+        <parameter key="jatun.event_listener.class">Jatun\SymfonyBundle\EventListener\JatunEventListener</parameter>
+        
+        <parameter key="jatun.javascript_provider.string.class">Jatun\Javascript\Provider\StringProvider</parameter>
+        <parameter key="jatun.javascript_provider.file.class">Jatun\Javascript\Provider\FileProvider</parameter>
+        <parameter key="jatun.javascript_provider.chain.class">Jatun\Javascript\Provider\ChainProvider</parameter>
+        <parameter key="jatun.javascript_file_resolver.jatun_resource.class">Jatun\Javascript\Provider\FileResolver\JatunResourceResolver</parameter>
+        <parameter key="jatun.javascript_parser.argument.class">Jatun\Javascript\Parser\ArgumentParser</parameter>
+        <parameter key="jatun.javascript_parser.trigger.class">Jatun\Javascript\Parser\TriggerParser</parameter>
+        
+    </parameters>
+
+    <services>
+        <service id="jatun.environment" class="%jatun.environment.class%">
+            <argument type="service" id="jatun.codec" />
+            <argument type="service" id="jatun.javascript_builder" />
+        </service>
+        <service id="jatun.codec" class="%jatun.codec.class%" />
+        <service id="jatun.javascript_builder" class="%jatun.javascript_builder.class%" />
+        
+        <service id="jatun.twig_extension" class="%jatun.twig_extension.class%" public="false">
+            <argument type="service" id="jatun.environment" />
+            <argument type="service" id="jatun.codec" />
+            <tag name="twig.extension" />
+        </service>
+        
+        <service id="jatun.event_listener" class="%jatun.event_listener.class%">
+            <tag name="kernel.event_subscriber" />
+        </service>
+        
+        <service id="jatun.javascript_provider.string" class="%jatun.javascript_provider.string.class%" public="false">
+            <tag name="jatun.javascript_provider" />
+        </service>
+        <service id="jatun.javascript_provider.file" class="%jatun.javascript_provider.file.class%" public="false">
+            <tag name="jatun.javascript_provider" />
+        </service>
+        <service id="jatun.javascript_provider.chain" class="%jatun.javascript_provider.chain.class%" public="false">
+            <argument type="service" id="jatun.javascript_builder" />
+            <tag name="jatun.javascript_provider" />
+        </service>
+        
+        <service id="jatun.javascript_file_resolver.jatun_resource" class="%jatun.javascript_file_resolver.jatun_resource.class%" public="false">
+            <tag name="jatun.javascript_file_resolver" />
+        </service>
+    </services>
+</container>

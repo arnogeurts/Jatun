@@ -2,6 +2,8 @@
 
 namespace Jatun\Javascript;
 
+use Jatun\Javascript\Resource\JavascriptResourceInterface;
+
 /**
  * @author Arno Geurts
  */
@@ -19,9 +21,9 @@ class JavascriptEventCollector implements \IteratorAggregate
      * @param string $event
      * @param string $javascript
      */
-    public function add($event, $javascript)
+    public function add($event, JavascriptResourceInterface $resource)
     {
-        $this->events[$event] = $javascript;
+        $this->events[$event] = $resource;
     }
     
     /**

@@ -2,6 +2,7 @@
 
 namespace Jatun\Event;
 
+use Jatun\Javascript\Resource\FileResource;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -24,6 +25,14 @@ class FlashmessageEvent extends Event
             ->setDefaults(array(
                 'duration' => 3000
             ));
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getJavascriptResource()
+    {
+        return new FileResource('events/flashmessage.js');
     }
     
     /**

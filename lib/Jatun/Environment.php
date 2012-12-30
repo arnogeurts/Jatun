@@ -2,8 +2,12 @@
 
 namespace Jatun;
 
+use Jatun\Codec\CodecInterface;
 use Jatun\Event\EventInterface;
-use Jatun\Parser\Json\JsonParserInterface;
+use Jatun\Exception\UnknownEventException;
+use Jatun\Javascript\JavascriptBuilder;
+use Jatun\Javascript\JavascriptEventCollector;
+
 /**
  * Description of Environment
  *
@@ -12,10 +16,16 @@ use Jatun\Parser\Json\JsonParserInterface;
 class Environment 
 {
     /**
-     * The jatun response encoder
-     * @var EncoderInterface
+     * The jatun response codec
+     * @var CodecInterface
      */
-    protected $encoder;
+    protected $codec;
+    
+    /**
+     * The javascript builder
+     * @var JavascriptBuilderInterface
+     */
+    protected $javascriptBuilder;
     
     /**
      * The available jatun events
@@ -29,9 +39,10 @@ class Environment
      * 
      * @param CodecInterface $codec 
      */
-    public function __construct(EncoderInterface $encoder)
+    public function __construct(CodecInterface $codec, JavascriptBuilder $javascriptBuilder)
     {
-        $this->encoder = $encoder;
+        $this->codec = $codec;
+        $this->javascriptBuilder = $javascriptBuilder;
     }
     
     /**
@@ -39,7 +50,7 @@ class Environment
      * 
      * @param EventInterface $event
      */
-    public function add(EventInterface $event)
+    public function addEvent(EventInterface $event)
     {
         $this->events[$event->getName()] = $event;
     }
@@ -51,7 +62,7 @@ class Environment
      * @return EventInterface 
      * @throws UnknownEventException if the given event name does not exist
      */
-    public function get($name)
+    public function getEvent($name)
     {
         if ( ! array_key_exists($name, $this->events)) {
             throw new UnknownEventException(sprintf('No event named "%s" found', $name));
@@ -66,15 +77,16 @@ class Environment
      * @param array $data
      * @return string 
      */
-    public function createResponse(array $data)
+    public function createResponse(EventList $list)
     {
-        $collector = new DataCollector();
-        
-        foreach ($data as $event => $arguments) {
-            $this->get($event)->build($collector, $arguments);
+        foreach ($list as $event) {
+            if ( ! $event->getResolved()) {
+                $this->getEvent($event->getName())->resolve($event);
+                $event->setResolved();
+            }
         }
         
-        return $this->encoder->encode($collection->toArray());
+        return $this->codec->encode($list);
     }
     
     /**

@@ -2,8 +2,9 @@
 
 namespace Jatun\Event;
 
-use Jatun\Parser\Json\Builder\JsonBuilderInterface;
+use Jatun\Event as ResolvableEvent;
 use Jatun\Exception\InvalidArgumentException;
+use Jatun\Javascript\JavascriptEventCollector;
 use Symfony\Component\OptionsResolver\Exception\ExceptionInterface as OptionsResolverException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -22,12 +23,27 @@ abstract class Event implements EventInterface
     abstract public function setDefaultOptions(OptionsResolverInterface $resolver);
     
     /**
+     * Get the javascript resource for this event
+     * 
+     * @return string
+     */
+    abstract public function getJavascriptResource();
+    
+    /**
      * {@inheritDoc}
      */
-    public function build(JsonBuilderInterface $builder, array $arguments = array())
+    public function resolve(ResolvableEvent $event)
     {
-        $args = $this->getArguments($arguments);
-        $builder->add($this->getName(), $args);
+        $args = $this->getArguments($event->getArguments());
+        $event->setArguments($args);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function javascript(JavascriptEventCollector $collector)
+    {
+        $collector->add($this->getName(), $this->getJavascriptResource());
     }
     
     /**

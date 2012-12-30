@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="jatun.event.html.class">Jatun\Event\HtmlEvent</parameter>
+        <parameter key="jatun.event.flashmessage.class">Jatun\Event\FlashmessageEvent</parameter>
+        <parameter key="jatun.event.dialog_open.class">Jatun\Event\DialogOpenEvent</parameter>
+        <parameter key="jatun.event.dialog_close.class">Jatun\Event\DialogCloseEvent</parameter>
+        <parameter key="jatun.event.dialog_title.class">Jatun\Event\DialogTitleEvent</parameter>
+    </parameters>
+
+    <services>
+        <service id="jatun.event.html" class="%jatun.event.html.class%" public="false">
+            <tag name="jatun.event" />
+        </service>
+        
+        <service id="jatun.event.flashmessage" class="%jatun.event.flashmessage.class%" public="false">
+            <tag name="jatun.event" />
+        </service>
+        
+        <service id="jatun.event.dialog_open" class="%jatun.event.dialog_open.class%" public="false">
+            <tag name="jatun.event" />
+        </service>
+        
+        <service id="jatun.event.dialog_close" class="%jatun.event.dialog_close.class%" public="false">
+            <tag name="jatun.event" />
+        </service>
+        
+        <service id="jatun.event.dialog_title" class="%jatun.event.dialog_title.class%" public="false">
+            <tag name="jatun.event" />
+        </service>
+    </services>
+</container>

@@ -3,6 +3,9 @@
 namespace Jatun\SymfonyBundle;
 
 use Jatun\SymfonyBundle\DependencyInjection\Compiler\AddJatunEventPass;
+use Jatun\SymfonyBundle\DependencyInjection\Compiler\AddJavascriptFileResolverPass;
+use Jatun\SymfonyBundle\DependencyInjection\Compiler\AddJavascriptParserPass;
+use Jatun\SymfonyBundle\DependencyInjection\Compiler\AddJavascriptProviderPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -17,5 +20,7 @@ class JatunSymfonyBundle extends Bundle
     {
         parent::build($container);
         $container->addCompilerPass(new AddJatunEventPass());
+        $container->addCompilerPass(new AddJavascriptFileResolverPass());
+        $container->addCompilerPass(new AddJavascriptProviderPass());
     }
 }

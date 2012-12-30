@@ -2,6 +2,7 @@
 
 namespace Jatun\Event;
 
+use Jatun\Javascript\Resource\FileResource;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -23,6 +24,14 @@ class DialogOpenEvent extends Event
                 'height'    => 600,
                 'buttons'   => '{}' // empty array
             ));
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getJavascriptResource()
+    {
+        return new FileResource('events/dialog_open.js');
     }
     
     /**

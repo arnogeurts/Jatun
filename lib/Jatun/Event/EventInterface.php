@@ -2,8 +2,8 @@
 
 namespace Jatun\Event;
 
-use Jatun\Response\DataCollector;
-use Jatun\Javascript\Event\
+use Jatun\Event as ResolvableEvent;
+use Jatun\Javascript\JavascriptEventCollector;
 
 /**
  * EventInterface
@@ -20,11 +20,11 @@ interface EventInterface
     public function javascript(JavascriptEventCollector $collector); 
     
     /**
-     * Populate the given collector
+     * Resolve the given event
      * 
-     * @param DataCollector $collector
+     * @param Event $event
      */
-    public function build(DataCollector $collector, array $arguments = array());
+    public function resolve(ResolvableEvent $event);
     
     /**
      * Get the name of the event
