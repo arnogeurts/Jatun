@@ -11,6 +11,10 @@ parameters:
 services:
     jatun.environment:
         class: %jatun.environment.class%
+        arguments: ["@jatun.response_encoder", "@jatun.javascript_builder"]
+        
+    jatun.response_encoder:
+        
         
     jatun.twig_extension.jatun:
         class: %jatun.twig_extension.jatun.class%

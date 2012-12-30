@@ -2,6 +2,7 @@
 
 namespace Jatun\Event;
 
+use Jatun\Javascript\Resource\FileResource;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -18,6 +19,14 @@ class DialogCloseEvent extends Event
             ->setRequired(array(
                 'id'
             ));
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getJavascriptResource()
+    {
+        return new FileResource('events/dialog_close.js');
     }
     
     /**

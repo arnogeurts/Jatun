@@ -2,6 +2,7 @@
 
 namespace Jatun\Event;
 
+use Jatun\Javascript\Resource\FileResource;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -18,6 +19,14 @@ class HtmlEvent extends Event
             ->setRequired(array(
                 'id', 'content'
             ));
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getJavascriptResource()
+    {
+        return new FileResource('events/html.js');
     }
     
     /**
