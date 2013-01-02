@@ -18,8 +18,8 @@ class ScriptHandler
      */
     public static function dumpJatun($event)
     {
-        $options = sef::getOptions($event);
-        $process = new Process(self::getPhp().' '.self::getConsole($options).' '.self::getCommand());
+        $options = self::getOptions($event);
+        $process = new Process(self::getPhp().' '.self::getConsole($options).' '.self::getCommand($options));
         $process->run(function ($type, $buffer) { echo $buffer; });
         
         if (!$process->isSuccessful()) {
@@ -69,7 +69,7 @@ class ScriptHandler
      */
     protected static function getCommand(array $options)
     {
-        return 'jatun:dump '.getJatunDir($options).' --filename '.self::getJatunFilename();
+        return 'jatun:dump '.self::getJatunDir($options).' --filename '.self::getJatunFilename();
     }
     
     /**
