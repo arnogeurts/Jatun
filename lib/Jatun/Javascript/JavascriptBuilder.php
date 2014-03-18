@@ -2,11 +2,9 @@
 
 namespace Jatun\Javascript;
 
-use Jatun\Javascript\Parser\JavascriptParserInterface;
+use Jatun\Javascript\Loader\JavascriptLoaderInterface;
 use Jatun\Javascript\Provider\JavascriptProviderInterface;
-use Jatun\Javascript\Resource\ChainResource;
 use Jatun\Javascript\Resource\JavascriptResourceInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Arno Geurts
@@ -15,43 +13,23 @@ class JavascriptBuilder
 {   
     /**
      * The javascript providers to cast the resources to string
-     * @var array
+     * @var JavascriptProviderInterface[]
      */
     private $providers = array();
-    
+
     /**
-     * The class for the event resource
-     * @var string
+     * @var JavascriptLoaderInterface
      */
-    private $options;
-    
+    private $loader = array();
+
     /**
-     * Constructor
-     * Inject the core resource
-     * 
-     * @param mixed $coreResource
+     * @param JavascriptLoaderInterface $loader
      */
-    public function __construct(array $options = array())
+    public function __construct(JavascriptLoaderInterface $loader)
     {
-        $this->setOptions($options);
+        $this->loader = $loader;
     }
-    
-    /**
-     * Resolve the options passed to the builder
-     * 
-     * @param array $options
-     */
-    protected function setOptions(array $options)
-    {
-        $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
-           'event_resource_class' => '\\Jatun\\Javascript\\Resource\\EventResource',
-           'core_resource_class'  => '\\Jatun\\Javascript\\Resource\\CoreResource'
-        ));
-        
-        $this->options = $resolver->resolve($options);
-    }
-    
+
     /**
      * Add a provider to cast the resource to javascript string
      * 
@@ -65,25 +43,19 @@ class JavascriptBuilder
     /**
      * {@inheritdoc}
      */
-    public function build(JavascriptEventCollector $collector) 
+    public function build()
     {
-        $coreClass = $this->options['core_resource_class'];
-        $eventClass = $this->options['event_resource_class'];
-        
-        $resources = array(new $coreClass());
-        foreach ($collector as $event => $resource) {
-            $resources[] = new $eventClass($event, $resource);
-        }
-        
-        return $this->getResource(new ChainResource($resources));
+        return $this->buildResource($this->loader->load());
     }
-    
+
     /**
      * Build the given resource to a string
-     * 
+     *
      * @param mixed $resource
+     * @throws \Exception
+     * @return string
      */
-     public function getResource(JavascriptResourceInterface $resource)
+     public function buildResource(JavascriptResourceInterface $resource)
      {
          foreach ($this->providers as $provider) {
              if ($provider->supports($resource)) {

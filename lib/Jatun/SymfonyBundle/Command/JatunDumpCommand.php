@@ -30,7 +30,7 @@ class JatunDumpCommand extends ContainerAwareCommand
         $dir = rtrim($input->getArgument('path'), DIRECTORY_SEPARATOR);
         
         if (!is_dir($dir)) {
-            throw new \InvalidArgumentException(sprintf('The target directory "%s" does not exist.', $path));
+            throw new \InvalidArgumentException(sprintf('The target directory "%s" does not exist.', $dir));
         }
         
         $path = $dir . DIRECTORY_SEPARATOR . $input->getOption('filename');
@@ -39,7 +39,7 @@ class JatunDumpCommand extends ContainerAwareCommand
         $jatunEnv = $this->getContainer()->get('jatun.environment');
         
         $handle = @fopen($path, 'w');
-        $success = $handle && fwrite($handle, $jatunEnv->createJavascript());
+        $success = $handle && fwrite($handle, $jatunEnv->buildJavascript());
         fclose($handle);
         
         if ( ! $success) {

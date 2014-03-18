@@ -9,12 +9,12 @@ class FileResource implements JavascriptResourceInterface
      * @var string
      */
     private $path;
-    
+
     /**
-     * Constructor 
+     * Constructor
      * Inject the path to the javascript file
-     * 
-     * @param string $javascript
+     *
+     * @params string $path
      */
     public function __construct($path)
     {

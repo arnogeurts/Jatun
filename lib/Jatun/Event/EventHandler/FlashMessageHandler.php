@@ -1,6 +1,6 @@
 <?php
 
-namespace Jatun\Event;
+namespace Jatun\Event\EventHandler;
 
 use Jatun\Javascript\Resource\FileResource;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * @author Arno Geurts 
  */
-class FlashmessageEvent extends Event
+class FlashMessageHandler extends EventHandler
 {   
     /**
      * {@inheritDoc}
@@ -20,19 +20,11 @@ class FlashmessageEvent extends Event
                 'id', 'level', 'text', 'duration'
             ))
             ->setAllowedValues(array(
-                'level' => array('error', 'notice', 'success')
+                'level' => array('danger', 'warning', 'info', 'success')
             ))
             ->setDefaults(array(
-                'duration' => 3000
+                'duration' => 5000
             ));
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getJavascriptResource()
-    {
-        return new FileResource('events/flashmessage.js');
     }
     
     /**
@@ -41,16 +33,22 @@ class FlashmessageEvent extends Event
     protected function getArguments(array $arguments = array())
     {
         switch (true) {
-            case array_key_exists('error', $arguments):
-                $arguments['level'] = 'error';
-                $arguments['text'] = $arguments['error'];
-                unset($arguments['error']);
+            case array_key_exists('danger', $arguments):
+                $arguments['level'] = 'danger';
+                $arguments['text'] = $arguments['danger'];
+                unset($arguments['danger']);
+                break;
+
+            case array_key_exists('warning', $arguments):
+                $arguments['level'] = 'warning';
+                $arguments['text'] = $arguments['warning'];
+                unset($arguments['warning']);
                 break;
             
-            case array_key_exists('notice', $arguments):
-                $arguments['level'] = 'notice';
-                $arguments['text'] = $arguments['notice'];
-                unset($arguments['notice']);
+            case array_key_exists('info', $arguments):
+                $arguments['level'] = 'info';
+                $arguments['text'] = $arguments['info'];
+                unset($arguments['info']);
                 break;
             
             case array_key_exists('success', $arguments):
@@ -63,6 +61,14 @@ class FlashmessageEvent extends Event
         }
         
         return parent::getArguments($arguments);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function javascript()
+    {
+        return new FileResource('events/flashmessage.js');
     }
     
     /**

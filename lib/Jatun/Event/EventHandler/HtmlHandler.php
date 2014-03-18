@@ -1,6 +1,6 @@
 <?php
 
-namespace Jatun\Event;
+namespace Jatun\Event\EventHandler;
 
 use Jatun\Javascript\Resource\FileResource;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * @author Arno Geurts 
  */
-class HtmlEvent extends Event
+class HtmlHandler extends EventHandler
 {   
     /**
      * {@inheritDoc}
@@ -24,7 +24,7 @@ class HtmlEvent extends Event
     /**
      * {@inheritdoc}
      */
-    public function getJavascriptResource()
+    public function javascript()
     {
         return new FileResource('events/html.js');
     }

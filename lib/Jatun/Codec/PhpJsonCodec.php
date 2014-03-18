@@ -2,8 +2,8 @@
 
 namespace Jatun\Codec;
 
-use Jatun\Event;
-use Jatun\EventList;
+use Jatun\Event\Event;
+use Jatun\Event\EventList;
 
 /**
  * @author Arno Geurts
@@ -28,7 +28,7 @@ class PhpJsonCodec implements CodecInterface
     /**
      * Cast the event list to an array
      * 
-     * @param EventList $list
+     * @param EventList|Event[] $list
      * @return array 
      */
     private function toArray(EventList $list)
@@ -36,7 +36,7 @@ class PhpJsonCodec implements CodecInterface
         $array = array();
         foreach ($list as $event) {
             $array[] = array(
-                'event'     => 'jatun.' . $event->getName(),
+                'event'     => $event->getName(),
                 'arguments' => $event->getArguments()
             );
         }
@@ -53,7 +53,7 @@ class PhpJsonCodec implements CodecInterface
         foreach (json_decode($list, true) as $event) {
             $eventName = substr($event['event'], 6);
             $e = new Event($eventName, $event['arguments']);
-            $e->setResolved();
+            $e->resolve();
             $list->add($e);
         }
         

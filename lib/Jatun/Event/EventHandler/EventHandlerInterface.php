@@ -1,30 +1,30 @@
 <?php
 
-namespace Jatun\Event;
+namespace Jatun\Event\EventHandler;
 
-use Jatun\Event as ResolvableEvent;
-use Jatun\Javascript\JavascriptEventCollector;
+use Jatun\Event\Event;
+use Jatun\Javascript\Resource\JavascriptResourceInterface;
 
 /**
  * EventInterface
  *
  * @author Arno Geurts
  */
-interface EventInterface
+interface EventHandlerInterface
 {
     /**
      * Populate the event collector with the javascript event handler
      * 
-     * @param JavascriptEventCollector $collector
+     * @return JavascriptResourceInterface
      */
-    public function javascript(JavascriptEventCollector $collector); 
+    public function javascript();
     
     /**
      * Resolve the given event
      * 
      * @param Event $event
      */
-    public function resolve(ResolvableEvent $event);
+    public function resolve(Event $event);
     
     /**
      * Get the name of the event

@@ -7,6 +7,6 @@ namespace Jatun\Exception;
  *
  * @author arno
  */
-class UnknownEventException extends Exception
+class UnknownEventHandlerException extends Exception
 {
 }

@@ -2,72 +2,93 @@
 
 namespace Jatun\Event;
 
-use Jatun\Event as ResolvableEvent;
-use Jatun\Exception\InvalidArgumentException;
-use Jatun\Javascript\JavascriptEventCollector;
-use Symfony\Component\OptionsResolver\Exception\ExceptionInterface as OptionsResolverException;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 /**
- * @author Arno Geurts 
+ * Class Event
+ * @package Jatun
  */
-abstract class Event implements EventInterface
+class Event
 {
     /**
-     * Validate the given arguments
-     * 
+     * @var string
+     */
+    private $event;
+
+    /**
+     * @var array
+     */
+    private $arguments;
+
+    /**
+     * @var bool
+     */
+    private $resolved = false;
+
+    /**
+     * @param $event
      * @param array $arguments
-     * @return boolean
      */
-    abstract public function setDefaultOptions(OptionsResolverInterface $resolver);
-    
-    /**
-     * Get the javascript resource for this event
-     * 
-     * @return string
-     */
-    abstract public function getJavascriptResource();
-    
-    /**
-     * {@inheritDoc}
-     */
-    public function resolve(ResolvableEvent $event)
+    public function __construct($event, array $arguments = array())
     {
-        $args = $this->getArguments($event->getArguments());
-        $event->setArguments($args);
+        $this->event = $event;
+        $this->setArguments($arguments);
     }
-    
+
     /**
-     * {@inheritdoc}
+     * Resolve this event
      */
-    public function javascript(JavascriptEventCollector $collector)
+    public function resolve()
     {
-        $collector->add($this->getName(), $this->getJavascriptResource());
+        $this->resolved = true;
     }
-    
+
     /**
-     * Get the arguments passed to the event
-     * 
-     * @return array
-     * @throws InvalidArgumentException
+     * @return bool
      */
-    protected function getArguments(array $arguments = array())
+    public function isResolved()
     {
-        $resolver = new OptionsResolver();
-        $this->setDefaultOptions($resolver);
-        
-        try {
-            $args = $resolver->resolve($arguments);
-        } catch (OptionsResolverException $e) {
-            // rethrow as Jatun exception
-            throw new InvalidArgumentException(sprintf('Invalid arguments supplied for event %s', $this->getName()));
+        return $this->resolved;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->event;
+    }
+
+    /**
+     * @param array $arguments
+     * @throws \Exception
+     */
+    public function setArguments(array $arguments)
+    {
+        if ($this->isResolved()) {
+            throw new \Exception ("Can not change arguments of a resolved event");
         }
-        
-        foreach ($args as &$arg) {
-            $arg = (string)$arg;
+
+        $this->arguments = $arguments;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @throws \Exception
+     */
+    public function setArgument($key, $value)
+    {
+        if ($this->isResolved()) {
+            throw new \Exception ("Can not change arguments of a resolved event");
         }
-        
-        return $args;
-    }   
+
+        $this->arguments[$key] = $value;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
+    }
 }

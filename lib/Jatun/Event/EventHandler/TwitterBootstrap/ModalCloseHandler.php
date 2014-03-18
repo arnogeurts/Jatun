@@ -1,22 +1,19 @@
 <?php
 
-namespace Jatun\Event\TwitterBootstrap;
+namespace Jatun\Event\EventHandler\TwitterBootstrap;
 
 use Jatun\Javascript\Resource\FileResource;
-
-use Jatun\Event\DialogCloseEvent;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Jatun\Event\Event;
+use Jatun\Event\EventHandler\DialogCloseHandler;
 
 /**
  * @author Arno Geurts
  */
-class ModalCloseEvent extends DialogCloseEvent
+class ModalCloseHandler extends DialogCloseHandler
 {
     /**
      * {@inheritDoc}
      */
-    public function getJavascriptResource()
+    public function javascript()
     {
         return new FileResource('events/twitter_bootstrap/modal_close.js');
     }
@@ -26,6 +23,6 @@ class ModalCloseEvent extends DialogCloseEvent
      */
     public function getName()
     {
-        return 'modal.close';
+        return 'modal_close';
     }
 }

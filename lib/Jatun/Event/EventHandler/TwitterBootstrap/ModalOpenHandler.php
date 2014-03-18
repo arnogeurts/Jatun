@@ -1,22 +1,19 @@
 <?php
 
-namespace Jatun\Event\TwitterBootstrap;
+namespace Jatun\Event\EventHandler\TwitterBootstrap;
 
 use Jatun\Javascript\Resource\FileResource;
-
-use Jatun\Event\DialogOpenEvent;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Jatun\Event\Event;
+use Jatun\Event\EventHandler\DialogOpenHandler;
 
 /**
  * @author Arno Geurts
  */
-class ModalOpenEvent extends DialogOpenEvent
+class ModalOpenHandler extends DialogOpenHandler
 {
     /**
      * {@inheritDoc}
      */
-    public function getJavascriptResource()
+    public function javascript()
     {
         return new FileResource('events/twitter_bootstrap/modal_open.js');
     }
@@ -26,6 +23,6 @@ class ModalOpenEvent extends DialogOpenEvent
      */
     public function getName()
     {
-        return 'modal.open';
+        return 'modal_open';
     }
 }

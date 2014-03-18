@@ -9,7 +9,7 @@ class ChainProvider implements JavascriptProviderInterface
 {
     /**
      * The javascript builder
-     * @var JavascriptBuilderInterface
+     * @var JavascriptBuilder
      */
     private $builder;
     
@@ -41,7 +41,7 @@ class ChainProvider implements JavascriptProviderInterface
         
         $js = '';
         foreach ($resource->getResources() as $r) {
-            $js .= $this->builder->getResource($r) . "\n";
+            $js .= $this->builder->buildResource($r) . "\n";
         }
 
         return $js;

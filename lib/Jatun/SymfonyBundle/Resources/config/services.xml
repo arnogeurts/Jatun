@@ -6,51 +6,99 @@
 
     <parameters>
         <parameter key="jatun.environment.class">Jatun\Environment</parameter>
-        <parameter key="jatun.codec.class">Jatun\Codec\PhpJsonCodec</parameter>
         <parameter key="jatun.javascript_builder.class">Jatun\Javascript\JavascriptBuilder</parameter>
-        <parameter key="jatun.twig_extension.class">Jatun\SymfonyBundle\Twig\Extension\JatunExtension</parameter>
-        <parameter key="jatun.event_listener.class">Jatun\SymfonyBundle\EventListener\JatunEventListener</parameter>
-        
+        <parameter key="jatun.event_resolver.class">Jatun\Event\EventResolver</parameter>
+
+        <parameter key="jatun.codec.php_json.class">Jatun\Codec\PhpJsonCodec</parameter>
+
+        <parameter key="jatun.javascript_loader.chain.class">Jatun\Javascript\Loader\ChainLoader</parameter>
+        <parameter key="jatun.javascript_loader.core.class">Jatun\Javascript\Loader\CoreLoader</parameter>
+        <parameter key="jatun.javascript_loader.event_handler.class">Jatun\Javascript\Loader\EventHandlerLoader</parameter>
+
         <parameter key="jatun.javascript_provider.string.class">Jatun\Javascript\Provider\StringProvider</parameter>
         <parameter key="jatun.javascript_provider.file.class">Jatun\Javascript\Provider\FileProvider</parameter>
         <parameter key="jatun.javascript_provider.chain.class">Jatun\Javascript\Provider\ChainProvider</parameter>
+
+        <parameter key="jatun.javascript_file_resolver.chain.class">Jatun\Javascript\Provider\FileResolver\ChainResolver</parameter>
         <parameter key="jatun.javascript_file_resolver.jatun_resource.class">Jatun\Javascript\Provider\FileResolver\JatunResourceResolver</parameter>
-        <parameter key="jatun.javascript_parser.argument.class">Jatun\Javascript\Parser\ArgumentParser</parameter>
-        <parameter key="jatun.javascript_parser.trigger.class">Jatun\Javascript\Parser\TriggerParser</parameter>
-        
+        <parameter key="jatun.javascript_file_resolver.symfony.class">Jatun\SymfonyBundle\Jatun\Javascript\SymfonyFileResolver</parameter>
+
+        <parameter key="jatun.twig_extension.class">Jatun\SymfonyBundle\Twig\Extension\JatunExtension</parameter>
+        <parameter key="jatun.event_listener.class">Jatun\SymfonyBundle\EventListener\JatunEventListener</parameter>
     </parameters>
 
     <services>
+        <!-- The Jatun core classes -->
         <service id="jatun.environment" class="%jatun.environment.class%">
-            <argument type="service" id="jatun.codec" />
+            <argument type="service" id="jatun.codec.php_json" />
             <argument type="service" id="jatun.javascript_builder" />
+            <argument type="service" id="jatun.event_resolver" />
         </service>
-        <service id="jatun.codec" class="%jatun.codec.class%" />
-        <service id="jatun.javascript_builder" class="%jatun.javascript_builder.class%" />
-        
+
+        <service id="jatun.javascript_builder" class="%jatun.javascript_builder.class%" public="false">
+            <argument type="service" id="jatun.javascript_loader" />
+        </service>
+
+        <service id="jatun.event_resolver" class="%jatun.event_resolver.class%" public="false"/>
+
+        <!-- Codec -->
+        <service id="jatun.codec" alias="jatun.codec.php_json" />
+
+        <service id="jatun.codec.php_json" class="%jatun.codec.php_json.class%" public="false" />
+
+        <!-- Javascript loaders -->
+        <service id="jatun.javascript_loader" alias="jatun.javascript_loader.core" public="false" />
+
+        <service id="jatun.javascript_loader.core" class="%jatun.javascript_loader.core.class%" public="false">
+            <argument type="service" id="jatun.javascript_loader.chain" />
+        </service>
+
+        <service id="jatun.javascript_loader.chain" class="%jatun.javascript_loader.chain.class%" public="false" />
+
+        <service id="jatun.javascript_loader.event_handler" class="%jatun.javascript_loader.event_handler.class%" public="false">
+            <argument type="service" id="jatun.event_resolver" />
+            <tag name="jatun.javascript_loader" />
+        </service>
+
+        <!-- Javascript providers -->
+        <service id="jatun.javascript_provider.string" class="%jatun.javascript_provider.string.class%" public="false">
+            <tag name="jatun.javascript_provider" />
+        </service>
+
+        <service id="jatun.javascript_provider.file" class="%jatun.javascript_provider.file.class%" public="false">
+            <argument type="service" id="jatun.javascript_file_resolver" />
+            <tag name="jatun.javascript_provider" />
+        </service>
+
+        <service id="jatun.javascript_provider.chain" class="%jatun.javascript_provider.chain.class%" public="false">
+            <argument type="service" id="jatun.javascript_builder" />
+            <tag name="jatun.javascript_provider" />
+        </service>
+
+        <!-- File resolvers for the file provider -->
+        <service id="jatun.javascript_file_resolver" alias="jatun.javascript_file_resolver.chain" public="false" />
+
+        <service id="jatun.javascript_file_resolver.chain"  class="%jatun.javascript_file_resolver.chain.class%" public="false"/>
+
+        <service id="jatun.javascript_file_resolver.jatun_resource" class="%jatun.javascript_file_resolver.jatun_resource.class%" public="false">
+            <tag name="jatun.javascript_file_resolver" />
+        </service>
+
+        <service id="jatun.javascript_file_resolver.symfony" class="%jatun.javascript_file_resolver.symfony.class%" public="false">
+            <argument type="service" id="kernel" />
+            <tag name="jatun.javascript_file_resolver" />
+        </service>
+
+
+        <!-- Custom Symfony2 hooks, for better Jatun experience -->
         <service id="jatun.twig_extension" class="%jatun.twig_extension.class%" public="false">
             <argument type="service" id="jatun.environment" />
             <argument type="service" id="jatun.codec" />
             <tag name="twig.extension" />
         </service>
-        
+
         <service id="jatun.event_listener" class="%jatun.event_listener.class%">
             <tag name="kernel.event_subscriber" />
-        </service>
-        
-        <service id="jatun.javascript_provider.string" class="%jatun.javascript_provider.string.class%" public="false">
-            <tag name="jatun.javascript_provider" />
-        </service>
-        <service id="jatun.javascript_provider.file" class="%jatun.javascript_provider.file.class%" public="false">
-            <tag name="jatun.javascript_provider" />
-        </service>
-        <service id="jatun.javascript_provider.chain" class="%jatun.javascript_provider.chain.class%" public="false">
-            <argument type="service" id="jatun.javascript_builder" />
-            <tag name="jatun.javascript_provider" />
-        </service>
-        
-        <service id="jatun.javascript_file_resolver.jatun_resource" class="%jatun.javascript_file_resolver.jatun_resource.class%" public="false">
-            <tag name="jatun.javascript_file_resolver" />
         </service>
     </services>
 </container>

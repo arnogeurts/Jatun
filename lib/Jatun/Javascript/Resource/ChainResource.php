@@ -2,13 +2,17 @@
 
 namespace Jatun\Javascript\Resource;
 
+/**
+ * Class ChainResource
+ * @package Jatun\Javascript\Resource
+ */
 class ChainResource implements JavascriptResourceInterface
 {
     /**
      * The resources
-     * @var array
+     * @var JavascriptResourceInterface[]
      */
-    private $resources;
+    private $resources = array();
     
     /**
      * Constructor 
@@ -16,15 +20,25 @@ class ChainResource implements JavascriptResourceInterface
      * 
      * @param array $resources
      */
-    public function __construct(array $resources)
+    public function __construct(array $resources = array())
     {
-        $this->resources = $resources;
+        foreach ($resources as $resource) {
+            $this->addResource($resource);
+        }
+    }
+
+    /**
+     * @param JavascriptResourceInterface $resource
+     */
+    public function addResource(JavascriptResourceInterface $resource)
+    {
+        $this->resources[] = $resource;
     }
     
     /**
      * Get the array of resources
      * 
-     * @return array
+     * @return JavascriptResourceInterface[]
      */
     public function getResources()
     {

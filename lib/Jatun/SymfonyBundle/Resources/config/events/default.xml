@@ -5,32 +5,32 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="jatun.event.html.class">Jatun\Event\HtmlEvent</parameter>
-        <parameter key="jatun.event.flashmessage.class">Jatun\Event\FlashmessageEvent</parameter>
-        <parameter key="jatun.event.dialog_open.class">Jatun\Event\DialogOpenEvent</parameter>
-        <parameter key="jatun.event.dialog_close.class">Jatun\Event\DialogCloseEvent</parameter>
-        <parameter key="jatun.event.dialog_title.class">Jatun\Event\DialogTitleEvent</parameter>
+        <parameter key="jatun.event_handler.html.class">Jatun\Event\EventHandler\HtmlHandler</parameter>
+        <parameter key="jatun.event_handler.flashmessage.class">Jatun\Event\EventHandler\FlashMessageHandler</parameter>
+        <parameter key="jatun.event_handler.dialog_open.class">Jatun\Event\EventHandler\DialogOpenHandler</parameter>
+        <parameter key="jatun.event_handler.dialog_close.class">Jatun\Event\EventHandler\DialogCloseHandler</parameter>
+        <parameter key="jatun.event_handler.dialog_title.class">Jatun\Event\EventHandler\DialogTitleHandler</parameter>
     </parameters>
 
     <services>
-        <service id="jatun.event.html" class="%jatun.event.html.class%" public="false">
-            <tag name="jatun.event" />
+        <service id="jatun.event_handler.html" class="%jatun.event_handler.html.class%" public="false">
+            <tag name="jatun.event_handler" />
         </service>
         
-        <service id="jatun.event.flashmessage" class="%jatun.event.flashmessage.class%" public="false">
-            <tag name="jatun.event" />
+        <service id="jatun.event_handler.flashmessage" class="%jatun.event_handler.flashmessage.class%" public="false">
+            <tag name="jatun.event_handler" />
         </service>
         
-        <service id="jatun.event.dialog_open" class="%jatun.event.dialog_open.class%" public="false">
-            <tag name="jatun.event" />
+        <service id="jatun.event_handler.dialog_open" class="%jatun.event_handler.dialog_open.class%" public="false">
+            <tag name="jatun.event_handler" />
         </service>
         
-        <service id="jatun.event.dialog_close" class="%jatun.event.dialog_close.class%" public="false">
-            <tag name="jatun.event" />
+        <service id="jatun.event_handler.dialog_close" class="%jatun.event_handler.dialog_close.class%" public="false">
+            <tag name="jatun.event_handler" />
         </service>
         
-        <service id="jatun.event.dialog_title" class="%jatun.event.dialog_title.class%" public="false">
-            <tag name="jatun.event" />
+        <service id="jatun.event_handler.dialog_title" class="%jatun.event_handler.dialog_title.class%" public="false">
+            <tag name="jatun.event_handler" />
         </service>
     </services>
 </container>

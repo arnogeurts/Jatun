@@ -7,23 +7,23 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 /**
- * Class AddJavascriptFileResolverPass
+ * Class AddJatunEventHandlerPass
  * @package Jatun\SymfonyBundle\DependencyInjection\Compiler
  */
-class AddJavascriptFileResolverPass implements CompilerPassInterface
+class AddJatunEventHandlerPass implements CompilerPassInterface
 {
     /**
      * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
-        if (false === $container->hasDefinition('jatun.javascript_file_resolver.chain')) {
+        if (false === $container->hasDefinition('jatun.event_resolver')) {
             return;
         }
-        
-        $definition = $container->getDefinition('jatun.javascript_file_resolver.chain');
-        foreach ($container->findTaggedServiceIds('jatun.javascript_file_resolver') as $id => $attributes) {
-            $definition->addMethodCall('addResolver', array(new Reference($id)));
+
+        $definition = $container->getDefinition('jatun.event_resolver');
+        foreach ($container->findTaggedServiceIds('jatun.event_handler') as $id => $attributes) {
+            $definition->addMethodCall('addEventHandler', array(new Reference($id)));
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Jatun\Event;
+namespace Jatun\Event\EventHandler;
 
 use Jatun\Javascript\Resource\FileResource;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * @author Arno Geurts 
  */
-class DialogCloseEvent extends Event
+class DialogOpenHandler extends EventHandler
 {
     /**
      * {@inheritDoc}
@@ -17,16 +17,21 @@ class DialogCloseEvent extends Event
     {
         $resolver
             ->setRequired(array(
-                'id'
+                'id', 'title', 'content'
+            ))
+            ->setDefaults(array(
+                'width'     => 800,
+                'height'    => 600,
+                'buttons'   => '{}' // empty array
             ));
     }
     
     /**
      * {@inheritdoc}
      */
-    public function getJavascriptResource()
+    public function javascript()
     {
-        return new FileResource('events/dialog_close.js');
+        return new FileResource('events/dialog_open.js');
     }
     
     /**
@@ -34,6 +39,6 @@ class DialogCloseEvent extends Event
      */
     public function getName()
     {
-        return 'dialog.close';
+        return 'dialog_open';
     }
 }

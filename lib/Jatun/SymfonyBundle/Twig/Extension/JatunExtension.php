@@ -2,11 +2,14 @@
 
 namespace Jatun\SymfonyBundle\Twig\Extension;
 
-
-use Jatun\Event;
-use Jatun\EventList;
+use Jatun\Event\Event;
+use Jatun\Event\EventList;
 use Jatun\Environment;
 use Jatun\Codec\CodecInterface;
+use Jatun\SymfonyBundle\Twig\NodeVisitor\JatunNodeVisitor;
+use Jatun\SymfonyBundle\Twig\TokenParser\JatunArgumentTokenParser;
+use Jatun\SymfonyBundle\Twig\TokenParser\JatunEventTokenParser;
+use Twig_NodeVisitorInterface;
 
 /**
  * Description of Jatun
@@ -26,109 +29,46 @@ class JatunExtension extends \Twig_Extension
      * @var CodecInterface
      */
     protected $codec;
-    
+
     /**
      * Constructor
      * Inject the Jatun environment
-     * 
-     * @param JatunEnvironment $jatunEnv 
+     *
+     * @param Environment $env
+     * @param CodecInterface $codec
      */
     public function __construct(Environment $env, CodecInterface $codec) 
     {
         $this->env = $env;
         $this->codec = $codec;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @return array
      */
-    public function getFunctions()
+    public function getTokenParsers()
     {
         return array(
-            'jatun'      => new \Twig_Function_Method($this, 'jatun', array('is_safe' => array('html'))),
-            'jatun_core' => new \Twig_Function_Method($this, 'jatunCore', array('is_safe' => array('html'))),
+            new JatunEventTokenParser(),
+            new JatunArgumentTokenParser()
         );
     }
-    
+
     /**
-     * Return a jatun event
-     * 
-     * @param type $event
-     * @param type $arguments
-     * @return JatunEvent 
+     * @return Twig_NodeVisitorInterface[]
      */
-    public function jatun(array $data = array())
+    public function getNodeVisitors()
     {
-        $list = new EventList();
-        foreach ($data as $event => $arguments) {
-            $this->handle($event, $arguments, $list);
-        }
-        
-        return $this->env->createResponse($list);
+        return array(new JatunNodeVisitor());
     }
-    
+
     /**
-     * Handle and event with the arguments
-     * 
-     * @param string $event
-     * @param array $arguments
      * @param EventList $list
-     */
-    private function handle($event, $arguments, EventList $list)
-    {
-        switch ($event) {
-            case 'load':
-                $this->load($arguments, $list);
-                break;
-            default:
-                $this->addEvent($event, $arguments, $list);
-        }
-    }
-    
-    /**
-     * Add an event with an array of arguments or an array of argument arrays
-     * 
-     * @param string $event
-     * @param array $arguments
-     * @param EventList $list
-     */
-    private function addEvent($event, $arguments, EventList $list)
-    {
-        if (count(array_filter(array_keys($arguments), 'is_string'))) {
-            $list->add(new Event($event, $arguments));
-        } else {
-            foreach ($arguments as $args) {
-                $list->add(new Event($event, $args));
-            }
-        }
-    }
-    
-    /**
-     * Load a event list string
-     * 
-     * @param string $string
-     * @param EventList $list
-     */
-    private function load($string, EventList $list) 
-    {
-        if (is_array($string)) {
-            foreach($string as $str) {
-                $this->load($str, $list);
-            }
-        } else {
-            $newList = $this->codec->decode($string);
-            $list->merge($newList);
-        }
-    }
-    
-    /**
-     * Dump the javascript for the jatun core
-     * 
      * @return string
      */
-    public function jatunCore()
+    public function jatun(EventList $list)
     {
-        return $this->env->createJavascript();
+        return $this->env->createResponse($list);
     }
     
     /**

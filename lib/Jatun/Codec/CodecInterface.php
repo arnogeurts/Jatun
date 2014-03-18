@@ -2,7 +2,7 @@
 
 namespace Jatun\Codec;
 
-use Jatun\EventList;
+use Jatun\Event\EventList;
 
 /**
  * @author Arno Geurts
