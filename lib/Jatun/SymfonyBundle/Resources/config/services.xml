@@ -14,14 +14,16 @@
         <parameter key="jatun.javascript_loader.chain.class">Jatun\Javascript\Loader\ChainLoader</parameter>
         <parameter key="jatun.javascript_loader.core.class">Jatun\Javascript\Loader\CoreLoader</parameter>
         <parameter key="jatun.javascript_loader.event_handler.class">Jatun\Javascript\Loader\EventHandlerLoader</parameter>
+        <parameter key="jatun.javascript_loader.bundle.class">Jatun\SymfonyBundle\Jatun\Javascript\Loader\BundleLoader</parameter>
 
         <parameter key="jatun.javascript_provider.string.class">Jatun\Javascript\Provider\StringProvider</parameter>
         <parameter key="jatun.javascript_provider.file.class">Jatun\Javascript\Provider\FileProvider</parameter>
         <parameter key="jatun.javascript_provider.chain.class">Jatun\Javascript\Provider\ChainProvider</parameter>
 
         <parameter key="jatun.javascript_file_resolver.chain.class">Jatun\Javascript\Provider\FileResolver\ChainResolver</parameter>
+        <parameter key="jatun.javascript_file_resolver.absolute.class">Jatun\Javascript\Provider\FileResolver\AbsoluteFileResolver</parameter>
         <parameter key="jatun.javascript_file_resolver.jatun_resource.class">Jatun\Javascript\Provider\FileResolver\JatunResourceResolver</parameter>
-        <parameter key="jatun.javascript_file_resolver.symfony.class">Jatun\SymfonyBundle\Jatun\Javascript\SymfonyFileResolver</parameter>
+        <parameter key="jatun.javascript_file_resolver.symfony.class">Jatun\SymfonyBundle\Jatun\Javascript\Provider\FileResolver\SymfonyFileResolver</parameter>
 
         <parameter key="jatun.twig_extension.class">Jatun\SymfonyBundle\Twig\Extension\JatunExtension</parameter>
         <parameter key="jatun.event_listener.class">Jatun\SymfonyBundle\EventListener\JatunEventListener</parameter>
@@ -60,6 +62,12 @@
             <tag name="jatun.javascript_loader" />
         </service>
 
+        <service id="jatun.javascript_loader.bundle" class="%jatun.javascript_loader.bundle.class%" public="false">
+            <argument type="service" id="kernel" />
+            <argument>%jatun.bundle_resource_path%</argument>
+            <tag name="jatun.javascript_loader" />
+        </service>
+
         <!-- Javascript providers -->
         <service id="jatun.javascript_provider.string" class="%jatun.javascript_provider.string.class%" public="false">
             <tag name="jatun.javascript_provider" />
@@ -79,6 +87,10 @@
         <service id="jatun.javascript_file_resolver" alias="jatun.javascript_file_resolver.chain" public="false" />
 
         <service id="jatun.javascript_file_resolver.chain"  class="%jatun.javascript_file_resolver.chain.class%" public="false"/>
+
+        <service id="jatun.javascript_file_resolver.absolute" class="%jatun.javascript_file_resolver.absolute.class%" public="false">
+            <tag name="jatun.javascript_file_resolver" />
+        </service>
 
         <service id="jatun.javascript_file_resolver.jatun_resource" class="%jatun.javascript_file_resolver.jatun_resource.class%" public="false">
             <tag name="jatun.javascript_file_resolver" />

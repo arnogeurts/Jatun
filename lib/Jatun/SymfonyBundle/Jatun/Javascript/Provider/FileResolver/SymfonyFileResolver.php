@@ -1,11 +1,15 @@
 <?php
 
-namespace Jatun\SymfonyBundle\Jatun\Javascript;
+namespace Jatun\SymfonyBundle\Jatun\Javascript\Provider\FileResolver;
 
 use Jatun\Javascript\Provider\FileResolver\JavascriptFileResolverInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\Kernel;
 
+/**
+ * Class SymfonyFileResolver
+ * @package Jatun\SymfonyBundle\Jatun\Javascript\Provider\FileResolver
+ */
 class SymfonyFileResolver implements JavascriptFileResolverInterface
 {
     /**
@@ -30,6 +34,15 @@ class SymfonyFileResolver implements JavascriptFileResolverInterface
      */
     public function resolve($path)
     {
-        return $this->kernel->locateResource($path);
+        $resolved = null;
+        try {
+            $resolved = $this->kernel->locateResource($path);
+        } catch (\InvalidArgumentException $e) {
+            // Do nothing, so the function will return null => could not resolve
+        } catch (\RuntimeException $e) {
+            // Do nothing, so the function will return null => could not resolve
+        }
+
+        return $resolved;
     }
 }

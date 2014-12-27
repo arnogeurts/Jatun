@@ -34,6 +34,10 @@ class ChainResolver implements JavascriptFileResolverInterface
             }
         }
 
+        if (!file_exists($resolvedPath)) {
+            throw new \RuntimeException(sprintf('Unable to resolve path "%s"', $path));
+        }
+
         return $resolvedPath;
     }
 }

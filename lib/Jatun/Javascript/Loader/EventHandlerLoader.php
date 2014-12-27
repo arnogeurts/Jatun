@@ -35,7 +35,11 @@ class EventHandlerLoader implements JavascriptLoaderInterface
     {
         $resource = new ChainResource();
         foreach ($this->eventResolver->getEventHandlers() as $handler) {
-            $resource->addResource($handler->javascript());
+            $handlerResource = $handler->javascript();
+            // add the resource for the given handler, if it is not null
+            if ($handlerResource) {
+                $resource->addResource($handlerResource);
+            }
         }
 
         return $resource;

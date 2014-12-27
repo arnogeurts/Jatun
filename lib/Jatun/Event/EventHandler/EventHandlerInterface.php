@@ -15,7 +15,7 @@ interface EventHandlerInterface
     /**
      * Populate the event collector with the javascript event handler
      * 
-     * @return JavascriptResourceInterface
+     * @return JavascriptResourceInterface|null
      */
     public function javascript();
     

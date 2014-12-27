@@ -8,7 +8,8 @@ use Twig_Node_Module;
 use Twig_NodeInterface;
 use Twig_NodeVisitorInterface;
 
-class JatunNodeVisitor implements Twig_NodeVisitorInterface
+class
+JatunNodeVisitor implements Twig_NodeVisitorInterface
 {
     /**
      * Called before child nodes are visited.

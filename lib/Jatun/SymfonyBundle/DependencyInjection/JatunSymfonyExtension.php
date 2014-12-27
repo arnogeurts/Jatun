@@ -19,6 +19,8 @@ class JatunSymfonyExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $container->setParameter('jatun.bundle_resource_path', 'Resources/jatun');
+
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
         $loader->load('events/default.xml');

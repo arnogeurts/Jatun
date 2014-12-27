@@ -4,6 +4,7 @@ namespace Jatun\Event\EventHandler;
 
 use Jatun\Event\Event;
 use Jatun\Exception\InvalidArgumentException;
+use Jatun\Javascript\Resource\JavascriptResourceInterface;
 use Symfony\Component\OptionsResolver\Exception\ExceptionInterface as OptionsResolverException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -13,6 +14,16 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 abstract class EventHandler implements EventHandlerInterface
 {
+    /**
+     * Populate the event collector with the javascript event handler
+     * By default no javascript is loaded for the event
+     *
+     * @return JavascriptResourceInterface
+     */
+    public function javascript()
+    {
+        return null;
+    }
 
     /**
      * {@inheritDoc}

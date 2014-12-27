@@ -40,7 +40,7 @@ class FileProvider implements JavascriptProviderInterface
         $js = @file_get_contents($path);
         
         if ( ! $js) {
-            throw new \Exception(sprintf('Unable to load file resource %s', $path));
+            throw new \Exception(sprintf('Unable to load file resource "%s"', $path));
         }
         
         return trim($js);
